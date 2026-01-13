@@ -10,16 +10,16 @@ from .services import list_excel_sheets
 
 class ListSheetsView(APIView):
     """
-    API endpoint to list sheets in an Excel file.
+    API endpoint to analyze Excel file and return columns with types for each sheet.
     
     Expects a POST request with 'file' field containing the Excel file.
-    Returns JSON response with list of sheet names.
+    Returns JSON response with sheets, their columns, and column types.
     """
     parser_classes = [MultiPartParser, FormParser]
     
     def post(self, request):
         """
-        Handle POST request to list sheets in uploaded Excel file.
+        Handle POST request to analyze Excel file and return columns with types.
         """
         if 'file' not in request.FILES:
             return Response(
