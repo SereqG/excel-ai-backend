@@ -20,4 +20,5 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/analyzer/', include('excel_analyzer.urls')),
+    path('api/files/', include('file_manager.urls')),
 ]
