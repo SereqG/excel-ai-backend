@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-e9owuwnqoq%vx7_om(!3%txx%%2#euy4!==n#pzqv4*8!na!$_'
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-e9owuwnqoq%vx7_om(!3%txx%%2#euy4!==n#pzqv4*8!na!$_')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='', cast=lambda v: [s.strip() for s in v.split(',') if s.strip()])
 
 
 # Application definition
@@ -129,10 +130,11 @@ MEDIA_URL = '/media/'
 # CORS settings
 # https://github.com/adamchainz/django-cors-headers
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-]
+CORS_ALLOWED_ORIGINS = config(
+    'CORS_ALLOWED_ORIGINS',
+    default='http://localhost:3000,http://127.0.0.1:3000',
+    cast=lambda v: [s.strip() for s in v.split(',') if s.strip()]
+)
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -161,17 +163,22 @@ CORS_ALLOW_METHODS = [
 ]
 
 # File upload constraints
-MAX_FILE_SIZE = 5 * 1024 * 1024  # 5MB in bytes
-MAX_UPLOADS_PER_DAY = 5
-FILE_TTL_HOURS = 24
+MAX_FILE_SIZE = config('MAX_FILE_SIZE', default=5 * 1024 * 1024, cast=int)  # 5MB in bytes (default)
+MAX_UPLOADS_PER_DAY = config('MAX_UPLOADS_PER_DAY', default=5, cast=int)
+FILE_TTL_HOURS = config('FILE_TTL_HOURS', default=24, cast=int)
 
 # Celery Configuration
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = config('CELERY_BROKER_URL', default='redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = config('CELERY_RESULT_BACKEND', default='redis://localhost:6379/0')
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
+
+# For development/testing: run tasks synchronously (no Redis/worker needed)
+# Set to False in production to use async task queue
+CELERY_TASK_ALWAYS_EAGER = config('CELERY_TASK_ALWAYS_EAGER', default=DEBUG, cast=bool)
+CELERY_TASK_EAGER_PROPAGATES = config('CELERY_TASK_EAGER_PROPAGATES', default=True, cast=bool)
 
 # Celery Beat Schedule
 CELERY_BEAT_SCHEDULE = {
