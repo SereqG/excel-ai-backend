@@ -28,6 +28,10 @@ def validate_file_size(file) -> None:
     Raises:
         FileSizeExceededError: If file size exceeds MAX_FILE_SIZE
     """
+    # Skip file size validation in testing/development environment
+    if settings.DEBUG:
+        return
+    
     if file.size > settings.MAX_FILE_SIZE:
         raise FileSizeExceededError(
             f'File size ({file.size} bytes) exceeds maximum allowed size '
@@ -48,6 +52,10 @@ def check_upload_limit(clerk_user_id: str) -> bool:
     Raises:
         UploadLimitExceededError: If limit exceeded
     """
+    # Skip upload limit check in testing/development environment
+    if settings.DEBUG:
+        return True
+    
     today_start = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0)
     
     upload_count = ProcessedFile.objects.filter(

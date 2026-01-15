@@ -20,7 +20,9 @@ def process_spreadsheet_sheet(self, file_id: str):
     Args:
         file_id: UUID of the ProcessedFile instance
     """
+    print(f'Processing file {file_id}')
     try:
+        logger.info(f'Processing file {file_id}')
         file_record = ProcessedFile.objects.get(file_id=file_id)
         
         file_record.status = 'PROCESSING'
