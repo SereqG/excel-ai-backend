@@ -180,10 +180,12 @@ def check_authentication(request) -> str:
     Raises:
         AuthenticationError: If authentication is missing
     """
-    clerk_user_id = getattr(request, 'clerk_user_id', None)
+    clerk_user_id = request.META.get('HTTP_X_CLERK_USER_ID')
+    if clerk_user_id:
+        clerk_user_id = clerk_user_id.strip()
     if not clerk_user_id:
         raise AuthenticationError('Authentication required')
-    return clerk_user_id
+    return clerk_user_id.strip()
 
 
 def validate_file_type(file) -> None:

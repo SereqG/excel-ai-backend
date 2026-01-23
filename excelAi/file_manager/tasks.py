@@ -3,6 +3,7 @@ Celery tasks for file_manager app.
 """
 import os
 import logging
+from copy import copy
 from celery import shared_task
 from django.conf import settings
 from django.core.files.base import ContentFile
@@ -20,7 +21,6 @@ def process_spreadsheet_sheet(self, file_id: str):
     Args:
         file_id: UUID of the ProcessedFile instance
     """
-    print(f'Processing file {file_id}')
     try:
         logger.info(f'Processing file {file_id}')
         file_record = ProcessedFile.objects.get(file_id=file_id)
@@ -50,12 +50,19 @@ def process_spreadsheet_sheet(self, file_id: str):
                 new_cell = new_sheet[cell.coordinate]
                 new_cell.value = cell.value
                 if cell.has_style:
-                    new_cell.font = cell.font
-                    new_cell.border = cell.border
-                    new_cell.fill = cell.fill
-                    new_cell.number_format = cell.number_format
-                    new_cell.protection = cell.protection
-                    new_cell.alignment = cell.alignment
+                    # Copy styles properly by creating new style objects
+                    if cell.font:
+                        new_cell.font = copy(cell.font)
+                    if cell.border:
+                        new_cell.border = copy(cell.border)
+                    if cell.fill:
+                        new_cell.fill = copy(cell.fill)
+                    if cell.number_format:
+                        new_cell.number_format = cell.number_format
+                    if cell.protection:
+                        new_cell.protection = copy(cell.protection)
+                    if cell.alignment:
+                        new_cell.alignment = copy(cell.alignment)
         
         # Save the processed workbook to a temporary location
         processed_filename = f'{file_id}_{file_record.selected_sheet}.xlsx'
