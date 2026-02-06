@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/analyzer/', include('excel_analyzer.urls')),
     path('api/files/', include('file_manager.urls')),
+    path('api/pipeline/', include('pipeline_execution.urls')),
 ]
