@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'excel_analyzer',
     'file_manager',
+    'pipeline_execution',
 ]
 
 MIDDLEWARE = [
