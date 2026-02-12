@@ -1,8 +1,8 @@
 from django.urls import path
 
-from .views import test_endpoint
+from .views import pipeline_execution
 
 urlpatterns = [
-    path("test/", test_endpoint, name="pipeline-execution-test"),
+    path("execution/", pipeline_execution, name="pipeline execution"),
 ]
 
