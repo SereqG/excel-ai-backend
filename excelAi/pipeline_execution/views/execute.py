@@ -41,6 +41,7 @@ class PipelineExecuteView(APIView):
                 status=PipelineJob.Status.PENDING,
             )
 
+
             async_result = execute_pipeline.delay(str(job.job_id))
             job.celery_task_id = async_result.id
             job.save(update_fields=["celery_task_id", "updated_at"])
