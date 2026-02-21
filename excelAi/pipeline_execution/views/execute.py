@@ -2,6 +2,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from django.core.exceptions import PermissionDenied
+
 from file_manager.exceptions import AuthenticationError, FileNotFoundError, RequestValidationError
 from file_manager.services import check_authentication, get_file_by_id
 
@@ -64,6 +66,8 @@ class PipelineExecuteView(APIView):
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         except FileNotFoundError as e:
             return Response({"error": str(e)}, status=status.HTTP_404_NOT_FOUND)
+        except PermissionDenied as e:
+            return Response({"error": str(e)}, status=status.HTTP_403_FORBIDDEN)
         except Exception as e:
             return Response(
                 {"error": f"Error starting pipeline execution: {str(e)}"},
