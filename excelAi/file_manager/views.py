@@ -1,6 +1,7 @@
 """
 Views for file manager app.
 """
+from django.core.exceptions import PermissionDenied
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -133,6 +134,12 @@ class FileStatusView(APIView):
                 {'error': str(e)},
                 status=status.HTTP_404_NOT_FOUND
             )
+
+        except PermissionDenied as e:
+            return Response(
+                {'error': str(e)},
+                status=status.HTTP_403_FORBIDDEN
+            )
         
         except Exception as e:
             return Response(
@@ -183,6 +190,12 @@ class FileDownloadView(APIView):
             return Response(
                 {'error': str(e)},
                 status=status.HTTP_404_NOT_FOUND
+            )
+
+        except PermissionDenied as e:
+            return Response(
+                {'error': str(e)},
+                status=status.HTTP_403_FORBIDDEN
             )
         
         except FileNotReadyError as e:

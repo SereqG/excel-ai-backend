@@ -10,7 +10,12 @@ from django.utils import timezone
 
 from .models import PipelineJob
 from .services.validation import validate_pipeline_operations
-from .services.operations import apply_drop_column, apply_rename_column
+from .services.operations import (
+    apply_add_column,
+    apply_drop_column,
+    apply_rename_column,
+    apply_reorder_columns,
+)
 from .services.workbook import extract_selected_sheet_workbook
 
 
@@ -66,6 +71,20 @@ def execute_pipeline(self, job_id: str):
                 )
             elif operation_id == "drop_column":
                 apply_drop_column(
+                    ws,
+                    header_row_idx=header_row_idx,
+                    selected_sheet=file_record.selected_sheet,
+                    column_ids=params["columnIds"],
+                )
+            elif operation_id == "add_column":
+                apply_add_column(
+                    ws,
+                    header_row_idx=header_row_idx,
+                    column_name=params["columnName"],
+                    source=params["source"],
+                )
+            elif operation_id == "reorder_columns":
+                apply_reorder_columns(
                     ws,
                     header_row_idx=header_row_idx,
                     selected_sheet=file_record.selected_sheet,

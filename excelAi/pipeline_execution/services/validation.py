@@ -5,12 +5,14 @@ from typing import Any
 from .errors import PipelineValidationError
 
 
-SUPPORTED_OPERATION_IDS: set[str] = {"rename_column", "drop_column"}
+SUPPORTED_OPERATION_IDS: set[str] = {"rename_column", "drop_column", "add_column", "reorder_columns"}
 
 # Strict param shapes (exact keys, no defaults, no extras).
 ALLOWED_PARAMS_BY_OPERATION: dict[str, set[str]] = {
     "rename_column": {"columnId", "newName"},
     "drop_column": {"columnIds"},
+    "add_column": {"columnName", "source"},
+    "reorder_columns": {"columnIds"},
 }
 
 
