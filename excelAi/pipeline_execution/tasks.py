@@ -13,7 +13,10 @@ from .services.validation import validate_pipeline_operations
 from .services.operations import (
     apply_add_column,
     apply_drop_column,
+    apply_normalize_case,
+    apply_parse_date,
     apply_rename_column,
+    apply_replace_text,
     apply_reorder_columns,
 )
 from .services.workbook import extract_selected_sheet_workbook
@@ -89,6 +92,30 @@ def execute_pipeline(self, job_id: str):
                     header_row_idx=header_row_idx,
                     selected_sheet=file_record.selected_sheet,
                     column_ids=params["columnIds"],
+                )
+            elif operation_id == "normalize_case":
+                apply_normalize_case(
+                    ws,
+                    header_row_idx=header_row_idx,
+                    selected_sheet=file_record.selected_sheet,
+                    targets=params["targets"],
+                )
+            elif operation_id == "replace_text":
+                apply_replace_text(
+                    ws,
+                    header_row_idx=header_row_idx,
+                    selected_sheet=file_record.selected_sheet,
+                    column_id=params["columnId"],
+                    find_text=params["findText"],
+                    replace_text=params["replaceText"],
+                )
+            elif operation_id == "parse_date":
+                apply_parse_date(
+                    ws,
+                    header_row_idx=header_row_idx,
+                    selected_sheet=file_record.selected_sheet,
+                    column_ids=params["columnIds"],
+                    output_format=params["outputFormat"],
                 )
             else:
                 # Should be unreachable due to strict validation

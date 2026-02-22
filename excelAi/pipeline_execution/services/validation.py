@@ -5,7 +5,15 @@ from typing import Any
 from .errors import PipelineValidationError
 
 
-SUPPORTED_OPERATION_IDS: set[str] = {"rename_column", "drop_column", "add_column", "reorder_columns"}
+SUPPORTED_OPERATION_IDS: set[str] = {
+    "rename_column",
+    "drop_column",
+    "add_column",
+    "reorder_columns",
+    "normalize_case",
+    "replace_text",
+    "parse_date",
+}
 
 # Strict param shapes (exact keys, no defaults, no extras).
 ALLOWED_PARAMS_BY_OPERATION: dict[str, set[str]] = {
@@ -13,6 +21,9 @@ ALLOWED_PARAMS_BY_OPERATION: dict[str, set[str]] = {
     "drop_column": {"columnIds"},
     "add_column": {"columnName", "source"},
     "reorder_columns": {"columnIds"},
+    "normalize_case": {"targets"},
+    "replace_text": {"columnId", "findText", "replaceText"},
+    "parse_date": {"columnIds", "outputFormat"},
 }
 
 
