@@ -13,6 +13,7 @@ from .services.validation import validate_pipeline_operations
 from .services.operations import (
     apply_add_column,
     apply_drop_column,
+    apply_filter_rows,
     apply_normalize_case,
     apply_parse_date,
     apply_rename_column,
@@ -116,6 +117,14 @@ def execute_pipeline(self, job_id: str):
                     selected_sheet=file_record.selected_sheet,
                     column_ids=params["columnIds"],
                     output_format=params["outputFormat"],
+                )
+            elif operation_id == "filter_rows":
+                apply_filter_rows(
+                    ws,
+                    header_row_idx=header_row_idx,
+                    selected_sheet=file_record.selected_sheet,
+                    default_action=params["defaultAction"],
+                    rules=params["rules"],
                 )
             else:
                 # Should be unreachable due to strict validation
