@@ -12,6 +12,7 @@ SUPPORTED_OPERATION_IDS: set[str] = {
     "reorder_columns",
     "normalize_case",
     "replace_text",
+    "parse_date",
 }
 
 # Strict param shapes (exact keys, no defaults, no extras).
@@ -22,6 +23,7 @@ ALLOWED_PARAMS_BY_OPERATION: dict[str, set[str]] = {
     "reorder_columns": {"columnIds"},
     "normalize_case": {"targets"},
     "replace_text": {"columnId", "findText", "replaceText"},
+    "parse_date": {"columnIds", "outputFormat"},
 }
 
 
