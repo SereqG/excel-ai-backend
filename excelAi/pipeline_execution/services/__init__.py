@@ -10,6 +10,7 @@ from .column_id import parse_column_id, resolve_column_id
 from .operations import (
     apply_add_column,
     apply_drop_column,
+    apply_filter_rows,
     apply_normalize_case,
     apply_parse_date,
     apply_rename_column,
@@ -24,6 +25,7 @@ __all__ = [
     "resolve_column_id",
     "apply_add_column",
     "apply_drop_column",
+    "apply_filter_rows",
     "apply_normalize_case",
     "apply_parse_date",
     "apply_rename_column",
