@@ -19,6 +19,7 @@ from .services.operations import (
     apply_rename_column,
     apply_replace_text,
     apply_reorder_columns,
+    apply_sort_rows,
 )
 from .services.workbook import extract_selected_sheet_workbook
 
@@ -125,6 +126,13 @@ def execute_pipeline(self, job_id: str):
                     selected_sheet=file_record.selected_sheet,
                     default_action=params["defaultAction"],
                     rules=params["rules"],
+                )
+            elif operation_id == "sort_rows":
+                apply_sort_rows(
+                    ws,
+                    header_row_idx=header_row_idx,
+                    selected_sheet=file_record.selected_sheet,
+                    sorts=params["sorts"],
                 )
             else:
                 # Should be unreachable due to strict validation
