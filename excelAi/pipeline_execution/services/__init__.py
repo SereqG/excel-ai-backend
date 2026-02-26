@@ -16,6 +16,7 @@ from .operations import (
     apply_rename_column,
     apply_replace_text,
     apply_reorder_columns,
+    apply_sort_rows,
 )
 
 __all__ = [
@@ -31,5 +32,6 @@ __all__ = [
     "apply_rename_column",
     "apply_replace_text",
     "apply_reorder_columns",
+    "apply_sort_rows",
 ]
 

@@ -14,6 +14,7 @@ SUPPORTED_OPERATION_IDS: set[str] = {
     "replace_text",
     "parse_date",
     "filter_rows",
+    "sort_rows",
 }
 
 # Strict param shapes (exact keys, no defaults, no extras).
@@ -26,6 +27,7 @@ ALLOWED_PARAMS_BY_OPERATION: dict[str, set[str]] = {
     "replace_text": {"columnId", "findText", "replaceText"},
     "parse_date": {"columnIds", "outputFormat"},
     "filter_rows": {"defaultAction", "rules"},
+    "sort_rows": {"sorts"},
 }
 
 
